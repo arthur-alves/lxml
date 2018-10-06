@@ -693,6 +693,37 @@ class HtmlComment(etree.CommentBase, HtmlMixin):
 class HtmlElement(etree.ElementBase, HtmlMixin):
     # Override etree.ElementBase.cssselect() and set(), despite the MRO (FIXME: change base order?)
     cssselect = HtmlMixin.cssselect
+
+    def find_one_attr(self, css_class, attr):
+        """Get attr from element."""
+        item = self.cssselect(css_class)
+        if item:
+            return item[0].get(attr)
+
+        return ''
+
+    def find_one_text(self, css_class):
+        item = self.cssselect(css_class)
+        if item:
+            return item[0].text
+
+        return ''
+
+    def find_all_text(self, css_class):
+        items = self.cssselect(css_class)
+        if items:
+            return [item.text for item in items]
+
+        return []
+
+    def find_all_attr(self, css_class, attr):
+        """Get all attr from elements."""
+        items = self.cssselect(css_class)
+        if items:
+            return [i.get(attr) for i in items]
+
+        return[]
+
     set = HtmlMixin.set
 
 
